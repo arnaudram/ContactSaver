@@ -12,8 +12,11 @@ import com.example.contactsaver.adapters.ContactAdapter
 import com.example.contactsaver.database.AppDataBase
 import com.example.contactsaver.models.Contact
 import com.example.contactsaver.repository.ContactRepository
+import com.example.contactsaver.repository.ContactRepositoryFlow
 import com.example.contactsaver.viewmodels.MainViewModel
 import com.example.contactsaver.viewmodels.MainViewModelFactory
+import com.example.contactsaver.viewmodels.MainViewModelFactoryFlow
+import com.example.contactsaver.viewmodels.MainViewModelFlow
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -24,19 +27,19 @@ class MainActivity : AppCompatActivity() {
         val addContact=findViewById<TextView>(R.id.add_contact)
 
         val application= requireNotNull(this.application)
-        val contactDao=AppDataBase.getDataBase(application).getContactDao()
-        val contactRepository=ContactRepository(contactDao)
-        val mainViewModelFactory=MainViewModelFactory(application,contactRepository)
-        val mainViewModel by lazy {
-            ViewModelProvider(this,mainViewModelFactory)[MainViewModel::class.java]
+        val contactDao=AppDataBase.getDataBase(application).getContactDaoFlow()
+        val contactRepositoryFlow=ContactRepositoryFlow(contactDao)
+        val mainViewModelFactoryFlow=MainViewModelFactoryFlow(application,contactRepositoryFlow)
+        val mainViewModelFlow by lazy {
+            ViewModelProvider(this,mainViewModelFactoryFlow)[MainViewModelFlow::class.java]
         }
         val recyclerView:RecyclerView=findViewById(R.id.recyclerView)
         val layoutManager=LinearLayoutManager(this)
         recyclerView.layoutManager=layoutManager
 
-         mainViewModel.contactLists.observe(this, Observer {
+         mainViewModelFlow.contactLists.observe(this, Observer {
              val adapter= ContactAdapter(it)
-
+                     print("MainActivity :${it.size}")
                recyclerView.adapter=adapter
              adapter.notifyDataSetChanged()
             recyclerView.setHasFixedSize(true)
@@ -47,8 +50,10 @@ class MainActivity : AppCompatActivity() {
             val name=edit_name.text.toString()
             val email=edit_email.text.toString()
             if(name.isNotEmpty() and email.isNotEmpty()){
-                mainViewModel.saveContact(Contact(name=name,email=email))
+                mainViewModelFlow.saveContact(Contact(name=name,email=email))
                 Toast.makeText(this, "saved", Toast.LENGTH_SHORT).show()
+                edit_email.text.clear()
+                edit_name.text.clear()
             }
 
 

@@ -10,6 +10,7 @@ import com.example.contactsaver.models.Contact
 @Database(entities = [Contact::class],version = 1,exportSchema = false)
 abstract class AppDataBase:RoomDatabase() {
     abstract fun getContactDao():ContactDao
+    abstract  fun getContactDaoFlow():ContactDaoFlow
 
     companion object{
         private lateinit var singleInstance:AppDataBase
