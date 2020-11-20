@@ -8,6 +8,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.Worker
+import androidx.work.workDataOf
 import com.example.contactsaver.adapters.ContactAdapter
 import com.example.contactsaver.database.AppDataBase
 import com.example.contactsaver.models.Contact
@@ -17,6 +21,7 @@ import com.example.contactsaver.viewmodels.MainViewModel
 import com.example.contactsaver.viewmodels.MainViewModelFactory
 import com.example.contactsaver.viewmodels.MainViewModelFactoryFlow
 import com.example.contactsaver.viewmodels.MainViewModelFlow
+import com.example.contactsaver.worker.CreateContactWorker
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -50,13 +55,24 @@ class MainActivity : AppCompatActivity() {
             val name=edit_name.text.toString()
             val email=edit_email.text.toString()
             if(name.isNotEmpty() and email.isNotEmpty()){
-                mainViewModelFlow.saveContact(Contact(name=name,email=email))
-                Toast.makeText(this, "saved", Toast.LENGTH_SHORT).show()
+               // mainViewModelFlow.saveContact(Contact(name=name,email=email))
+                saveWithWorker(Contact(name=name,email=email))
+               // Toast.makeText(this, "saved", Toast.LENGTH_SHORT).show()
                 edit_email.text.clear()
                 edit_name.text.clear()
             }
 
 
         }
+    }
+
+    private fun saveWithWorker(contact: Contact) {
+        val workManager=WorkManager.getInstance(application)
+        val data= workDataOf("name" to contact.name,
+        "email" to contact.email)
+        val workRequest= OneTimeWorkRequestBuilder<CreateContactWorker>()
+            .setInputData(data).build()
+
+        workManager.enqueue(workRequest)
     }
 }
