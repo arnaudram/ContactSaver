@@ -12,7 +12,9 @@
         android:theme="@style/Theme.ContactSaver">
         <activity android:name=".SettingActivity"
            android:parentActivityName=".MainActivity" ></activity>
-        <activity android:name=".MainActivity">
+        <activity
+            android:theme="@style/mainActivyStyle"
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
