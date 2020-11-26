@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        android:defaultValue="not set yet"
+        android:key="edit_name"
+        android:selectAllOnFocus="true"
+        app:useSimpleSummaryProvider="true"
+        android:singleLine="true"
+        android:title="Display Name" />
+    <EditTextPreference
+        android:defaultValue="youremail@gmail.com"
+        android:key="edit_email"
+        app:useSimpleSummaryProvider="true"
+        android:title="Email Address" />
+    <ListPreference
+        android:key="select_social_network"
+        android:defaultValue="@string/default_social_network_value"
+       android:entryValues="@array/preference_social_network_values"
+        android:title="Social media"
+        app:entries="@array/preference_social_network_entries"
+        app:useSimpleSummaryProvider="true" />
+</PreferenceScreen>

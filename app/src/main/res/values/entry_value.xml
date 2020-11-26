@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="preference_social_network_values">
+        <item>https://www.google.com</item>
+        <item>https://www.facebook.com</item>
+        <item>https://www.linkdin.com</item>
+    </string-array>
+</resources>

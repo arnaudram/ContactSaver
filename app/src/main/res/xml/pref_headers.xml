@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:fragment="com.example.contactsaver.fragment.GeneralSettingFragment"
+        android:icon="@drawable/ic_baseline_info_24"
+
+        android:title="General" />
+    <Preference
+        android:icon="@drawable/ic_baseline_notifications_24"
+        android:title="Notification" />
+    <Preference
+        android:icon="@drawable/ic_baseline_sync_24"
+        android:title="Sync Data" />
+</PreferenceScreen>
