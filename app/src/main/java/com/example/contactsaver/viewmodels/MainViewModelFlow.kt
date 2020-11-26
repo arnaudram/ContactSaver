@@ -11,8 +11,18 @@ import kotlinx.coroutines.*
 class MainViewModelFlow(private val repositoryFlow: ContactRepositoryFlow):ViewModel() {
     private val scope=CoroutineScope(Dispatchers.Main + Job())
 
-
-
+private val _setting=MutableLiveData<Boolean>()
+     val setting: LiveData<Boolean> = _setting.switchMap {
+         liveData {
+             emit(it)
+         }
+     }
+    private val _nightMode=MutableLiveData<Boolean>()
+        val nightMode=_nightMode.switchMap {
+            liveData {
+                emit(it)
+            }
+        }
     fun saveContact(contact: Contact) {
         viewModelScope.launch {
             withContext(Dispatchers.IO){
@@ -21,6 +31,16 @@ class MainViewModelFlow(private val repositoryFlow: ContactRepositoryFlow):ViewM
         }
     }
 
+    fun onSetting(b: Boolean) {
+        _setting.value=b
+    }
+
+    fun onSetMode(nightMode: Boolean) {
+
+        if (_nightMode.value==nightMode){
+            _nightMode.value=!nightMode
+        } else _nightMode.value=nightMode
+    }
 
 
     val contactLists= liveData {
